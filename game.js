@@ -16,18 +16,40 @@ function nextSequence () {
    gamePattern.push(randomChosenColor);
    //select button with same ID as randomChosenColor
    $('#' + randomChosenColor).fadeIn(100).fadeOut(100).fadeIn(100);
-   //play sound associated with the selected color
-
+   //play sound 
    var audio = new Audio("sounds/" + randomChosenColor + ".mp3");
-   audio.play();
+  audio.play();
+  playSound(randomChosenColor);
 };
 
 //handler function
 $('.btn').click(function () {
   var userChosenColor = $(this).attr("id");
   userClickedPattern.push(userChosenColor);
+  var audio = new Audio("sounds/" + userChosenColor + ".mp3");
+  audio.play();
+  animatePress(userChosenColor);
 });
 
+//function to cause sound to play on button click
+function playSound(name) {
+  //play sound in nextSequence()
+  var audio = new Audio("sounds/" + name + ".mp3");
+  audio.play();
+  //play sound when user clicks a button
+  $('.btn').click(function () {
+  var userChosenColor = $(this).attr("id");
+  
+});
+};
+
+//animate buttons
+function animatePress(currentColor) {
+  $("#" + currentColor).addClass("pressed");
+  setTimeout(function() {
+      $("#" + currentColor).removeClass("pressed");
+    }, 100);
+  };
 
 
 
