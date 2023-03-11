@@ -13,7 +13,6 @@ var started = false;
 //give level and initial value of 0
 var level = 0;
 
-//generate a random number between 0 and 3
 function nextSequence () {
   userClickedPattern = [];
   level++;
@@ -26,19 +25,21 @@ function nextSequence () {
    //select button with same ID as randomChosenColor
    $('#' + randomChosenColor).fadeIn(300).fadeOut(300).fadeIn(300);
    //play sound 
-   var audio = new Audio("sounds/" + randomChosenColor + ".mp3");
-  audio.play();
   playSound(randomChosenColor);
 };
 
 //handler function
 $('.btn').click(function () {
   var userChosenColor = $(this).attr("id");
-  userClickedPattern.push(userChosenColor);
+  
   var audio = new Audio("sounds/" + userChosenColor + ".mp3");
   audio.play();
   animatePress(userChosenColor);
-  checkAnswer(userClickedPattern.length-1); 
+  checkAnswer(userClickedPattern.length-1);
+  userClickedPattern.push(userChosenColor); 
+  //check if arrays are storing data properly
+  console.log("gamePattern: " + gamePattern);
+  console.log("userClickedPattern: " + userClickedPattern);
 });
 
 //function to cause sound to play on button click
@@ -86,10 +87,38 @@ function checkAnswer(currentLevel) {
       nextSequence();
     }, 1000);
     };
+   // else {
+      //setTimeout(function() {
+        //nextSequence();
+      //}, 1000);
+    //}
   }
-  else console.log("wrong");
+  else {
+    // check if data is being stored correctly
+    console.log("wrong");
+    console.log("wrong");
+    console.log("gamePattern: " + gamePattern);
+    console.log("userClickedPattern: " + userClickedPattern);
+    var audio = new Audio("Sounds/wrong.mp3");
+    audio.play();
+    $("body").addClass("game-over");
+    setTimeout(function() {
+      $("body").removeClass("game-over");
+    }, 200);
+    $("#level-title").text("Game Over, Press Any Key to Restart");
+    startOver();
+    //$(document).off("keydown");
+}
 };
 
-
+//restart the game
+function startOver () {
+  level = 0;
+  gamePattern = [];
+  started = false;
+  $(document).on("keydown", function() {
+    startOver();
+    });
+}
 
 
